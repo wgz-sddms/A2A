@@ -2,15 +2,13 @@ from collections.abc import AsyncIterable
 from typing import Any, Literal
 
 import httpx
-
 from langchain_core.messages import AIMessage, ToolMessage
 from langchain_core.tools import tool
-from langchain_google_genai import ChatGoogleGenerativeAI
-from pydantic import BaseModel
-
+# from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
-
+from pydantic import BaseModel
 
 memory = MemorySaver()
 
@@ -67,8 +65,9 @@ class CurrencyAgent:
         'Set response status to completed if the request is complete.'
     )
 
-    def __init__(self):
-        self.model = ChatGoogleGenerativeAI(model='gemini-2.0-flash')
+    def __init__(self, ollama_host, ollama_model):
+        # self.model = ChatGoogleGenerativeAI(model='gemini-2.0-flash')
+        self.model = ChatOllama(base_url=ollama_host, model=ollama_model)
         self.tools = [get_exchange_rate]
 
         self.graph = create_react_agent(

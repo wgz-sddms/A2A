@@ -2,19 +2,13 @@ import logging
 import os
 
 import click
-
 from agents.langgraph.agent import CurrencyAgent
 from agents.langgraph.task_manager import AgentTaskManager
 from common.server import A2AServer
-from common.types import (
-    AgentCapabilities,
-    AgentCard,
-    AgentSkill,
-    MissingAPIKeyError,
-)
+from common.types import (AgentCapabilities, AgentCard, AgentSkill,
+                          MissingAPIKeyError)
 from common.utils.push_notification_auth import PushNotificationSenderAuth
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
@@ -25,13 +19,17 @@ logger = logging.getLogger(__name__)
 @click.command()
 @click.option('--host', 'host', default='localhost')
 @click.option('--port', 'port', default=10000)
-def main(host, port):
+@click.option("--ollama-host", default="http://127.0.0.1:11434")
+@click.option("--ollama-model", default="qwen3")
+
+
+def main(host, port, ollama_host, ollama_model):
     """Starts the Currency Agent server."""
     try:
-        if not os.getenv('GOOGLE_API_KEY'):
-            raise MissingAPIKeyError(
-                'GOOGLE_API_KEY environment variable not set.'
-            )
+        # if not os.getenv('GOOGLE_API_KEY'):
+        #     raise MissingAPIKeyError(
+        #         'GOOGLE_API_KEY environment variable not set.'
+        #     )
 
         capabilities = AgentCapabilities(streaming=True, pushNotifications=True)
         skill = AgentSkill(
@@ -57,7 +55,10 @@ def main(host, port):
         server = A2AServer(
             agent_card=agent_card,
             task_manager=AgentTaskManager(
-                agent=CurrencyAgent(),
+                agent=CurrencyAgent(
+                    ollama_host=ollama_host,
+                    ollama_model=ollama_model
+                ),
                 notification_sender_auth=notification_sender_auth,
             ),
             host=host,
