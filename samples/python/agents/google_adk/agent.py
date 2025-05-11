@@ -2,9 +2,9 @@ import json
 import random
 from typing import Any
 
+from google.adk.agents.llm_agent import LlmAgent
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
-# from google.adk.agents.llm_agent import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
@@ -127,7 +127,7 @@ class ReimbursementAgent(AgentWithTaskManager):
     def get_processing_message(self) -> str:
         return 'Processing the reimbursement request...'
 
-    def _build_agent(self) -> LiteLlm:
+    def _build_agent(self) -> LlmAgent:
         """Builds the LLM agent for the reimbursement agent."""
         return LiteLlm(
             model='ollama_chat/qwen3',
