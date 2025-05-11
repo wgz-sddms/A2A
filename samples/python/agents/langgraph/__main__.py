@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 @click.option('--host', 'host', default='localhost')
 @click.option('--port', 'port', default=10000)
 @click.option("--ollama-host", default="http://127.0.0.1:11434")
-@click.option("--ollama-model", default="qwen3")
+@click.option("--ollama-model", default="gemma")
 
 
 def main(host, port, ollama_host, ollama_model):

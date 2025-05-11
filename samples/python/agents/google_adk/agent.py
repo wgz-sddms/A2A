@@ -129,8 +129,8 @@ class ReimbursementAgent(AgentWithTaskManager):
 
     def _build_agent(self) -> LlmAgent:
         """Builds the LLM agent for the reimbursement agent."""
-        return LiteLlm(
-            model='ollama_chat/qwen3',
+        return LlmAgent(
+            model=LiteLlm(model='ollama_chat/qwen3:4b'),
             name='reimbursement_agent',
             description=(
                 'This agent handles the reimbursement process for the employees'
