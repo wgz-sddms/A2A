@@ -1,16 +1,15 @@
 import json
 import random
-
 from typing import Any
 
-from google.adk.agents.llm_agent import LlmAgent
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
+# from google.adk.agents.llm_agent import LlmAgent
+from google.adk.models.lite_llm import LiteLlm
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.adk.tools.tool_context import ToolContext
 from task_manager import AgentWithTaskManager
-
 
 # Local cache of created request_ids for demo purposes.
 request_ids = set()
@@ -128,10 +127,10 @@ class ReimbursementAgent(AgentWithTaskManager):
     def get_processing_message(self) -> str:
         return 'Processing the reimbursement request...'
 
-    def _build_agent(self) -> LlmAgent:
+    def _build_agent(self) -> LiteLlm:
         """Builds the LLM agent for the reimbursement agent."""
-        return LlmAgent(
-            model='gemini-2.0-flash-001',
+        return LiteLlm(
+            model='ollama_chat/qwen3',
             name='reimbursement_agent',
             description=(
                 'This agent handles the reimbursement process for the employees'
